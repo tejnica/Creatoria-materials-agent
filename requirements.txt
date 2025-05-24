@@ -1,0 +1,14 @@
+pyyaml==6.0.1
+requests==2.31.0
+spacy==3.7.2
+tenacity==8.2.3
+fastapi==0.104.1
+uvicorn==0.24.0
+pydantic==2.4.2
+beautifulsoup4==4.12.2
+selenium==4.15.2
+googlesearch-python==1.2.3
+arxiv==2.0.0
+scholarly==1.7.11
+en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1-py3-none-any.whl
+aci-python-sdk @ git+https://github.com/aipotheosis-labs/aci-python-sdk.git 

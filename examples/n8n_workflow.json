@@ -1,0 +1,145 @@
+{
+    "name": "Materials Search Workflow",
+    "nodes": [
+        {
+            "parameters": {
+                "path": "materials-webhook",
+                "options": {}
+            },
+            "name": "Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                250,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "url": "http://localhost:8000/materials-webhook",
+                "options": {
+                    "bodyParameters": {
+                        "parameters": [
+                            {
+                                "name": "query",
+                                "value": "={{$json.query}}"
+                            },
+                            {
+                                "name": "category",
+                                "value": "={{$json.category}}"
+                            }
+                        ]
+                    }
+                }
+            },
+            "name": "HTTP Request",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 1,
+            "position": [
+                450,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "string": [
+                        {
+                            "value1": "={{$json.status}}",
+                            "value2": "success"
+                        }
+                    ]
+                }
+            },
+            "name": "IF",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 1,
+            "position": [
+                650,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "values": {
+                    "string": [
+                        {
+                            "name": "error",
+                            "value": "={{$json.error}}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "name": "Set Error",
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 1,
+            "position": [
+                850,
+                200
+            ]
+        },
+        {
+            "parameters": {
+                "values": {
+                    "string": [
+                        {
+                            "name": "materials",
+                            "value": "={{$json.materials}}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "name": "Set Success",
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 1,
+            "position": [
+                850,
+                400
+            ]
+        }
+    ],
+    "connections": {
+        "Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "HTTP Request",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "HTTP Request": {
+            "main": [
+                [
+                    {
+                        "node": "IF",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "IF": {
+            "main": [
+                [
+                    {
+                        "node": "Set Error",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Set Success",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+} 

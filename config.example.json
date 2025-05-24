@@ -1,0 +1,68 @@
+{
+    "materials_project": "YOUR_MATERIALS_PROJECT_API_KEY",
+    "aci": {
+        "api_key": "YOUR_ACI_API_KEY",
+        "endpoint": "https://api.aci.dev",
+        "agent_id": "pubchem-agent"
+    },
+    "settings": {
+        "retry_attempts": 3,
+        "retry_delay": 4,
+        "max_workers": 2,
+        "timeout": 30,
+        "environment": "development",
+        "log_level": "INFO"
+    },
+    "deployment": {
+        "host": "0.0.0.0",
+        "port": 8000,
+        "workers": 4,
+        "reload": true
+    },
+    "web_search": {
+        "enabled": true,
+        "sources": {
+            "google_scholar": true,
+            "arxiv": true,
+            "sciencedirect": true,
+            "nature": true,
+            "springer": true,
+            "general_web": true
+        },
+        "max_results_per_source": 5,
+        "min_confidence": 0.6,
+        "selenium": {
+            "headless": true,
+            "timeout": 10,
+            "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        }
+    },
+    "categories": {
+        "composites": {
+            "description": "Composite materials",
+            "keywords": ["composite", "fiber", "reinforced"]
+        },
+        "ceramics": {
+            "description": "Ceramic materials",
+            "keywords": ["ceramic", "oxide", "inorganic"]
+        },
+        "metals": {
+            "description": "Metallic materials",
+            "keywords": ["metal", "alloy", "metallic"]
+        },
+        "polymers": {
+            "description": "Polymer materials",
+            "keywords": ["polymer", "plastic", "resin"]
+        },
+        "nanomaterials": {
+            "description": "Nanomaterials",
+            "keywords": ["nano", "nanoparticle", "nanostructured"]
+        }
+    },
+    "logging": {
+        "level": "INFO",
+        "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        "file": "materials_agent.log",
+        "cloud_logging": false
+    }
+} 
