@@ -161,7 +161,6 @@ class MaterialsAgent:
 
 
         """Извлечение тегов из описания материала"""
-        doc = self.nlp(description.lower())
         
         # Базовые теги на основе ключевых слов
         tag_keywords = {
