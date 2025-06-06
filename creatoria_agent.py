@@ -11,7 +11,6 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 import spacy
 from tenacity import retry, stop_after_attempt, wait_exponential
-#from aci import ACI
 from web_search import WebMaterialSearcher, WebSearchResult
 from parameter_parser import ParameterParser, ParameterConstraint
 
@@ -93,7 +92,6 @@ class MaterialsAgent:
         self.existing_materials = self._load_existing_materials()
         self.nlp = spacy.load("en_core_web_sm")
         self.config = self._load_config()
-        self.aci = self._init_aci()
         self.web_searcher = WebMaterialSearcher(self.config) if self.config.get("web_search", {}).get("enabled", False) else None
         self.parameter_parser = ParameterParser()
         
@@ -106,6 +104,7 @@ class MaterialsAgent:
             logger.error("Файл config.json не найден")
             raise
         
+         
     def _load_existing_materials(self) -> Dict:
         try:
             if not self.materials_file.exists():
@@ -153,13 +152,13 @@ class MaterialsAgent:
             return None
 
     async def _search_pubchem(self, query: str) -> Optional[Dict]:
-        
+        """Поиск в PubChem (заглушка)"""
+        return None
 
-   def _extract_tags(self, description: str) -> Set[str]:
+    def _extract_tags(self, description: str) -> Set[str]:
+        """Извлечение тегов из описания материала"""
         doc = self.nlp(description.lower())
-        return {token.text for token in doc if token.is_alpha and not token.is_stop}
-
-           
+        
         # Базовые теги на основе ключевых слов
         tag_keywords = {
             "lightweight": ["light", "low density", "lightweight"],
@@ -190,14 +189,6 @@ class MaterialsAgent:
     async def search_material(self, query: str, category: Optional[str] = None) -> List[Dict]:
         """Поиск материалов в различных источниках"""
         results = []
-        
-        # Поиск в PubChem через ACI
-        if self.aci:
-            try:
-                aci_results = await self._search_aci(query)
-                results.extend(aci_results)
-            except Exception as e:
-                logger.error(f"Ошибка при поиске в ACI: {str(e)}")
         
         # Поиск в интернете
         if self.web_searcher:
