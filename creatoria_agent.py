@@ -106,17 +106,6 @@ class MaterialsAgent:
             logger.error("Файл config.json не найден")
             raise
         
-    def _init_aci(self) -> ACI:
-        """Инициализация ACI клиента"""
-        try:
-            return ACI(
-                api_key=self.config["aci"]["api_key"],
-                endpoint=self.config["aci"]["endpoint"]
-            )
-        except Exception as e:
-            logger.error(f"Ошибка при инициализации ACI: {e}")
-            raise
-        
     def _load_existing_materials(self) -> Dict:
         try:
             if not self.materials_file.exists():
@@ -164,18 +153,7 @@ class MaterialsAgent:
             return None
 
     async def _search_pubchem(self, query: str) -> Optional[Dict]:
-        """Поиск в PubChem через ACI агента"""
-        try:
-            # Использование ACI агента для поиска в PubChem
-            result = await self.aci.agent(
-                agent_id=self.config["aci"]["agent_id"],
-                action="search",
-                params={"query": query}
-            )
-            return result
-        except Exception as e:
-            logger.error(f"Ошибка при поиске в PubChem через ACI: {e}")
-            return None
+        
 
     def _extract_tags(self, description: str) -> Set[str]:
         """Извлечение тегов из описания материала"""
