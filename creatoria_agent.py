@@ -155,10 +155,11 @@ class MaterialsAgent:
     async def _search_pubchem(self, query: str) -> Optional[Dict]:
         
 
-    def _extract_tags(self, description: str) -> Set[str]:
-        """Извлечение тегов из описания материала"""
+   def _extract_tags(self, description: str) -> Set[str]:
         doc = self.nlp(description.lower())
-        
+        return {token.text for token in doc if token.is_alpha and not token.is_stop}
+
+           
         # Базовые теги на основе ключевых слов
         tag_keywords = {
             "lightweight": ["light", "low density", "lightweight"],
