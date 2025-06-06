@@ -11,7 +11,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 import spacy
 from tenacity import retry, stop_after_attempt, wait_exponential
-from aci import ACI
+#from aci import ACI
 from web_search import WebMaterialSearcher, WebSearchResult
 from parameter_parser import ParameterParser, ParameterConstraint
 
@@ -93,7 +93,7 @@ class MaterialsAgent:
         self.existing_materials = self._load_existing_materials()
         self.nlp = spacy.load("en_core_web_sm")
         self.config = self._load_config()
-        self.aci = self._init_aci()
+        #self.aci = self._init_aci()
         self.web_searcher = WebMaterialSearcher(self.config) if self.config.get("web_search", {}).get("enabled", False) else None
         self.parameter_parser = ParameterParser()
         
@@ -106,17 +106,7 @@ class MaterialsAgent:
             logger.error("Файл config.json не найден")
             raise
         
-    def _init_aci(self) -> ACI:
-        """Инициализация ACI клиента"""
-        try:
-            return ACI(
-                api_key=self.config["aci"]["api_key"],
-                endpoint=self.config["aci"]["endpoint"]
-            )
-        except Exception as e:
-            logger.error(f"Ошибка при инициализации ACI: {e}")
-            raise
-        
+         
     def _load_existing_materials(self) -> Dict:
         try:
             if not self.materials_file.exists():
@@ -164,19 +154,7 @@ class MaterialsAgent:
             return None
 
     async def _search_pubchem(self, query: str) -> Optional[Dict]:
-        """Поиск в PubChem через ACI агента"""
-        try:
-            # Использование ACI агента для поиска в PubChem
-            result = await self.aci.agent(
-                agent_id=self.config["aci"]["agent_id"],
-                action="search",
-                params={"query": query}
-            )
-            return result
-        except Exception as e:
-            logger.error(f"Ошибка при поиске в PubChem через ACI: {e}")
-            return None
-
+    
     def _extract_tags(self, description: str) -> Set[str]:
         """Извлечение тегов из описания материала"""
         doc = self.nlp(description.lower())
@@ -212,14 +190,7 @@ class MaterialsAgent:
         """Поиск материалов в различных источниках"""
         results = []
         
-        # Поиск в PubChem через ACI
-        if self.aci:
-            try:
-                aci_results = await self._search_aci(query)
-                results.extend(aci_results)
-            except Exception as e:
-                logger.error(f"Ошибка при поиске в ACI: {str(e)}")
-        
+           
         # Поиск в интернете
         if self.web_searcher:
             try:
