@@ -237,8 +237,8 @@ MIT
 
 ## Authors
 
-- Your name
-- Your email
+- Eduard Tsunsky (Cunskis)
+- edsolntsev@gmail.com
 
 ## Support
 
